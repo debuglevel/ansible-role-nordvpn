@@ -37,6 +37,7 @@
     owner: root
     group: root
     mode: 0640
+  register: downloaded_openvpn_configurations
 
 - name: Extract OpenVPN configurations
   become: true
@@ -47,6 +48,7 @@
     owner: root
     group: root
     mode: 0640
+  when: downloaded_openvpn_configurations.changed
 
 # Note: Change profile before copying to ensure idempotence
 - name: Ensure credentials file is referenced in wanted profile
