@@ -48,26 +48,26 @@
     group: root
     mode: 0640
 
-- name: Ensure OpenVPN configuration is active profile
-  become: true
-  ansible.builtin.copy:
-    remote_src: true
-    src: "{{ nordvpn_config }}"
-    # dest: /etc/openvpn/client/nord.ovpn
-    dest: /etc/openvpn/nordvpn/active.ovpn
-    owner: root
-    group: root
-    mode: 0640
-
-- name: Ensure credentials file is referenced in active profile
+# Note: Change profile before copying to ensure idempotence
+- name: Ensure credentials file is referenced in wanted profile
   become: true
   ansible.builtin.lineinfile:
-    path: /etc/openvpn/nordvpn/active.ovpn
+    path: "{{ nordvpn_config }}"
     regexp: '^auth-user-pass'
     line: 'auth-user-pass /etc/openvpn/nordvpn/credentials.cred'
     owner: root
     group: root
     mode: 0644
+
+- name: Ensure wanted OpenVPN configuration is active
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ nordvpn_config }}"
+    dest: /etc/openvpn/nordvpn/active.ovpn
+    owner: root
+    group: root
+    mode: 0640
 
 - name: Ensure credentials file
   become: true
