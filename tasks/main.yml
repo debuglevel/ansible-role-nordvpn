@@ -31,6 +31,12 @@
     group: root
     mode: 0640
 
+- name: Ensure /etc/openvpn/nordvpn/ exists
+  ansible.builtin.file:
+    state: directory
+    path: /etc/openvpn/nordvpn/
+    mode: 0640
+
 - name: Extract OpenVPN configurations
   become: true
   ansible.builtin.unarchive:
