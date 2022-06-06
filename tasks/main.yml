@@ -28,6 +28,15 @@
     path: /etc/openvpn/nordvpn/
     mode: u=rx,g=rx,o=rx
 
+- name: Ensure credentials file
+  become: true
+  ansible.builtin.template:
+    src: templates/credentials.cred.j2
+    dest: /etc/openvpn/nordvpn/credentials.cred
+    owner: root
+    group: root
+    mode: u=r,g=r,o=r
+
 - name: Download OpenVPN configurations
   become: true
   ansible.builtin.get_url:
@@ -67,15 +76,6 @@
     remote_src: true
     src: "{{ nordvpn_config }}"
     dest: /etc/openvpn/nordvpn/active.ovpn
-    owner: root
-    group: root
-    mode: u=r,g=r,o=r
-
-- name: Ensure credentials file
-  become: true
-  ansible.builtin.template:
-    src: templates/credentials.cred.j2
-    dest: /etc/openvpn/nordvpn/credentials.cred
     owner: root
     group: root
     mode: u=r,g=r,o=r
