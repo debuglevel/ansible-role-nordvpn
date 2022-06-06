@@ -1,2 +1,4 @@
 ---
-# vars file for nordvpn
+nordvpn_openvpn_url: https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+nordvpn_config_name: "{{ nordvpn_server_id }}.nordvpn.com.{{ nordvpn_protocol }}.ovpn"
+nordvpn_config: "/etc/openvpn/nordvpn/ovpn_{{ nordvpn_protocol }}/{{ nordvpn_config_name }}"

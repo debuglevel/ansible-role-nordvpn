@@ -1,2 +1,70 @@
 ---
-# tasks file for nordvpn
+- name: Ensure unzip is installed
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: 3600  # Do not update if already done in the last hour.
+    pkg:
+      - unzip
+  tags:
+    - installation
+
+- name: Ensure OpenVPN is installed
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    cache_valid_time: 3600  # Do not update if already done in the last hour.
+    pkg:
+      - openvpn
+  tags:
+    - installation
+
+- name: Download OpenVPN configurations
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ nordvpn_openvpn_url }}"
+    dest: "/etc/openvpn/nordvpn/ovpn.zip"
+    force: true
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Extract OpenVPN configurations
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: /etc/openvpn/nordvpn/ovpn.zip
+    dest: /etc/openvpn/nordvpn/
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Ensure OpenVPN configuration is active profile
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ nordvpn_config }}"
+    # dest: /etc/openvpn/client/nord.ovpn
+    dest: /etc/openvpn/nordvpn/active.ovpn
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Ensure credentials file is referenced in active profile
+  ansible.builtin.lineinfile:
+    path: /etc/openvpn/nordvpn/active.ovpn
+    regexp: '^auth-user-pass'
+    line: 'auth-user-pass /etc/openvpn/nordvpn/credentials.cred'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure credentials file
+  ansible.builtin.template:
+    src: templates/credentials.cred.j2
+    dest: /etc/openvpn/nordvpn/credentials.cred
+    owner: root
+    group: root
+    mode: 0644
