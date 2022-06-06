@@ -60,6 +60,7 @@
     mode: 0640
 
 - name: Ensure credentials file is referenced in active profile
+  become: true
   ansible.builtin.lineinfile:
     path: /etc/openvpn/nordvpn/active.ovpn
     regexp: '^auth-user-pass'
@@ -69,6 +70,7 @@
     mode: 0644
 
 - name: Ensure credentials file
+  become: true
   ansible.builtin.template:
     src: templates/credentials.cred.j2
     dest: /etc/openvpn/nordvpn/credentials.cred
