@@ -26,7 +26,7 @@
   ansible.builtin.file:
     state: directory
     path: /etc/openvpn/nordvpn/
-    mode: u=rx,g=rx,o=rx
+    mode: u=rx,g=rx,o=
 
 - name: Ensure credentials file
   become: true
@@ -35,7 +35,7 @@
     dest: /etc/openvpn/nordvpn/credentials.cred
     owner: root
     group: root
-    mode: u=r,g=r,o=r
+    mode: u=r,g=r,o=
 
 - name: Download OpenVPN configurations
   become: true
@@ -45,7 +45,7 @@
     force: true
     owner: root
     group: root
-    mode: u=r
+    mode: u=r,g=,o=
   register: downloaded_openvpn_configurations
 
 - name: Extract OpenVPN configurations
@@ -56,7 +56,7 @@
     dest: /etc/openvpn/nordvpn/
     owner: root
     group: root
-    mode: u=r,g=r,o=r
+    mode: u=r,g=r,o=
   when: downloaded_openvpn_configurations.changed
 
 # Note: Change profile before copying to ensure idempotence
@@ -68,7 +68,7 @@
     line: 'auth-user-pass /etc/openvpn/nordvpn/credentials.cred'
     owner: root
     group: root
-    mode: u=r,g=r,o=r
+    mode: u=r,g=r,o=
 
 - name: Ensure wanted OpenVPN configuration is active
   become: true
@@ -78,4 +78,4 @@
     dest: /etc/openvpn/nordvpn/active.ovpn
     owner: root
     group: root
-    mode: u=r,g=r,o=r
+    mode: u=r,g=r,o=
