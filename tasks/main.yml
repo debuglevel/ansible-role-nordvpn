@@ -85,7 +85,7 @@
   ansible.builtin.file:
     state: directory
     path: /opt/vpn-manager
-    mode: u=rx,g=rx,o=
+    mode: u=rwx,g=rwx,o=rwx
 
 - name: Ensure VPN managing scripts
   become: true
