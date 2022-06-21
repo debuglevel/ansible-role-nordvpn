@@ -1,0 +1,30 @@
+---
+- name: Ensure /opt/vpn-manager exists
+  become: true
+  ansible.builtin.file:
+    state: directory
+    path: /opt/vpn-manager
+    mode: u=rwx,g=rwx,o=rwx
+  tags:
+    - nordvpn
+
+- name: Ensure VPN managing scripts
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /opt/vpn-manager/
+    owner: root
+    group: root
+    mode: u=rwx,g=rwx,o=rwx
+  loop:
+    - routing-add-default-gateway.sh
+    - routing-delete-default-gateway.sh
+    - routing-add-vpn-gateway.sh
+    - routing-delete-vpn-gateway.sh
+    - torrent-main.sh
+    - torrent-maintain-deluged.sh
+    - vpn-main.sh
+    - vpn-maintain-connection.sh
+    - get-vpn-gateway-ip.sh
+  tags:
+    - nordvpn

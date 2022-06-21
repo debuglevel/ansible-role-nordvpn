@@ -1,0 +1,12 @@
+---
+- name: Ensure packages
+  ansible.builtin.include: packages.yaml
+
+- name: Ensure OpenVPN configuration
+  ansible.builtin.include: openvpn-configuration.yaml
+
+- name: Ensure vpn-manager scripts
+  ansible.builtin.include: vpn-manager.yaml
+
+- name: Ensure systemd unit
+  ansible.builtin.include: systemd-unit.yaml

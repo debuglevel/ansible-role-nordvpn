@@ -1,0 +1,72 @@
+---
+- name: Ensure /etc/openvpn/nordvpn/ exists
+  become: true
+  ansible.builtin.file:
+    state: directory
+    path: /etc/openvpn/nordvpn/
+    mode: u=rx,g=rx,o=
+  tags:
+    - nordvpn
+
+- name: Ensure credentials file
+  become: true
+  ansible.builtin.template:
+    src: templates/credentials.cred.j2
+    dest: /etc/openvpn/nordvpn/credentials.cred
+    owner: root
+    group: root
+    mode: u=r,g=r,o=
+  tags:
+    - nordvpn
+
+- name: Download OpenVPN configurations
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ nordvpn__openvpn_url }}"
+    dest: "/etc/openvpn/nordvpn/ovpn.zip"
+    force: true
+    owner: root
+    group: root
+    mode: u=r,g=,o=
+  register: downloaded_openvpn_configurations
+  tags:
+    - nordvpn
+
+- name: Extract OpenVPN configurations
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: /etc/openvpn/nordvpn/ovpn.zip
+    dest: /etc/openvpn/nordvpn/
+    owner: root
+    group: root
+    mode: u=r,g=r,o=
+  when: downloaded_openvpn_configurations.changed
+  tags:
+    - nordvpn
+
+# Note: Change profile before copying to ensure idempotence
+- name: Ensure credentials file is referenced in wanted profile
+  become: true
+  ansible.builtin.lineinfile:
+    path: "{{ nordvpn__config }}"
+    regexp: '^auth-user-pass'
+    line: 'auth-user-pass /etc/openvpn/nordvpn/credentials.cred'
+    owner: root
+    group: root
+    mode: u=r,g=r,o=
+  tags:
+    - nordvpn
+
+- name: Ensure wanted OpenVPN configuration is active
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ nordvpn__config }}"
+    dest: /etc/openvpn/client/active.conf
+    owner: root
+    group: root
+    mode: u=r,g=r,o=
+  notify: Restart openvpn
+  tags:
+    - nordvpn
