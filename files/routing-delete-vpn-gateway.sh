@@ -4,7 +4,7 @@ interface="eth0"
 
 openvpn_configuration="/etc/openvpn/client/active.conf"
 echo "Getting IP from OpenVPN configuration $openvpn_configuration..." 
-ip=$(./get-vpn-gateway-ip.sh)
+ip=$(${BASH_SOURCE%/*}/get-vpn-gateway-ip.sh)
 echo "Got IP from OpenVPN configuration: $ip" 
 
 echo "Deleting route to VPN gateway $ip via $gateway through $interface..."
