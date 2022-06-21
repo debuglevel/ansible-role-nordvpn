@@ -116,5 +116,6 @@
     - torrent-maintain-deluged.sh
     - vpn-main.sh
     - vpn-maintain-connection.sh
+    - get-vpn-gateway-ip.sh
   tags:
     - nordvpn
