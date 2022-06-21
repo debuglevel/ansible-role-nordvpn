@@ -1,2 +1,7 @@
 ---
 # handlers file for nordvpn
+- name: Restart openvpn
+  ansible.builtin.systemd:
+    name: openvpn-client@active
+    state: restarted
+  become: true

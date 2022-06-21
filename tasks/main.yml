@@ -89,6 +89,7 @@
     owner: root
     group: root
     mode: u=r,g=r,o=
+  notify: Restart openvpn
   tags:
     - nordvpn
 
@@ -117,5 +118,14 @@
     - vpn-main.sh
     - vpn-maintain-connection.sh
     - get-vpn-gateway-ip.sh
+  tags:
+    - nordvpn
+
+- name: Ensure OpenVPN service is enabled and started
+  ansible.builtin.systemd:
+    name: openvpn-client@active
+    enabled: true
+    state: started
+  become: true
   tags:
     - nordvpn
