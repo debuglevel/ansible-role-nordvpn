@@ -1,5 +1,5 @@
 #!/bin/bash
-openvpn_configuration="/etc/openvpn/nordvpn/active.ovpn"
+openvpn_configuration="/etc/openvpn/client/active.conf"
 sleep_duration=60
 
 while true; do

@@ -85,7 +85,7 @@
   ansible.builtin.copy:
     remote_src: true
     src: "{{ nordvpn__config }}"
-    dest: /etc/openvpn/nordvpn/active.ovpn
+    dest: /etc/openvpn/client/active.conf
     owner: root
     group: root
     mode: u=r,g=r,o=
