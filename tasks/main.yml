@@ -112,7 +112,9 @@
     mode: u=rwx,g=rwx,o=rwx
   loop:
     - routing-add-default-gateway.sh
+    - routing-delete-default-gateway.sh
     - routing-add-vpn-gateway.sh
+    - routing-delete-vpn-gateway.sh
     - torrent-main.sh
     - torrent-maintain-deluged.sh
     - vpn-main.sh
