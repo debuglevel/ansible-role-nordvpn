@@ -123,6 +123,48 @@
   tags:
     - nordvpn
 
+- name: Ensure OpenVPN unit file override
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: /lib/systemd/system/openvpn-client@.service
+    dest: /etc/systemd/system/openvpn-client@.service
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  notify: Restart openvpn
+  tags:
+    - nordvpn
+
+- name: Ensure ExecStartPre in unit file
+  ansible.builtin.lineinfile:
+    dest: /etc/systemd/system/openvpn-client@.service
+    regexp: "^ExecStartPre"
+    line: "ExecStartPre=/opt/vpn-manager/routing-add-vpn-gateway.sh"
+    insertafter: "^ExecStart"
+    state: present
+  become: true
+  tags:
+    - nordvpn
+
+- name: Ensure ExecStopPost in unit file
+  ansible.builtin.lineinfile:
+    dest: /etc/systemd/system/openvpn-client@.service
+    regexp: "^ExecStopPost"
+    line: "ExecStopPost=/opt/vpn-manager/routing-delete-vpn-gateway.sh"
+    insertafter: "^ExecStartPre"
+    state: present
+  become: true
+  tags:
+    - nordvpn
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+  tags:
+    - nordvpn
+
 - name: Ensure OpenVPN service is enabled and started
   ansible.builtin.systemd:
     name: openvpn-client@active
