@@ -8,7 +8,7 @@
     pkg:
       - unzip
   tags:
-    - installation
+    - nordvpn
 
 - name: Ensure OpenVPN is installed
   become: true
@@ -19,7 +19,7 @@
     pkg:
       - openvpn
   tags:
-    - installation
+    - nordvpn
 
 - name: Ensure /etc/openvpn/nordvpn/ exists
   become: true
@@ -27,6 +27,8 @@
     state: directory
     path: /etc/openvpn/nordvpn/
     mode: u=rx,g=rx,o=
+  tags:
+    - nordvpn
 
 - name: Ensure credentials file
   become: true
@@ -36,6 +38,8 @@
     owner: root
     group: root
     mode: u=r,g=r,o=
+  tags:
+    - nordvpn
 
 - name: Download OpenVPN configurations
   become: true
@@ -47,6 +51,8 @@
     group: root
     mode: u=r,g=,o=
   register: downloaded_openvpn_configurations
+  tags:
+    - nordvpn
 
 - name: Extract OpenVPN configurations
   become: true
@@ -58,6 +64,8 @@
     group: root
     mode: u=r,g=r,o=
   when: downloaded_openvpn_configurations.changed
+  tags:
+    - nordvpn
 
 # Note: Change profile before copying to ensure idempotence
 - name: Ensure credentials file is referenced in wanted profile
@@ -69,6 +77,8 @@
     owner: root
     group: root
     mode: u=r,g=r,o=
+  tags:
+    - nordvpn
 
 - name: Ensure wanted OpenVPN configuration is active
   become: true
@@ -79,6 +89,8 @@
     owner: root
     group: root
     mode: u=r,g=r,o=
+  tags:
+    - nordvpn
 
 - name: Ensure /opt/vpn-manager exists
   become: true
@@ -86,6 +98,8 @@
     state: directory
     path: /opt/vpn-manager
     mode: u=rwx,g=rwx,o=rwx
+  tags:
+    - nordvpn
 
 - name: Ensure VPN managing scripts
   become: true
@@ -102,3 +116,5 @@
     - torrent-maintain-deluged.sh
     - vpn-main.sh
     - vpn-maintain-connection.sh
+  tags:
+    - nordvpn
