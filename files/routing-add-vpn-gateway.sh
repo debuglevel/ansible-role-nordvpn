@@ -4,7 +4,7 @@ interface="eth0"
 
 openvpn_configuration="/etc/openvpn/nordvpn/active.ovpn"
 echo "Getting IP from OpenVPN configuration $openvpn_configuration..." 
-ip=$(sudo cat $openvpn_configuration | grep "remote " | cut -d " " -f 2)
+ip=$(./get-vpn-gateway-ip.sh)
 echo "Got IP from OpenVPN configuration: $ip" 
 
 echo "Adding route to VPN gateway $ip via $gateway through $interface..."
