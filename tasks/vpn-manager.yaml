@@ -15,7 +15,7 @@
     dest: /opt/vpn-manager/
     owner: root
     group: root
-    mode: u=rwx,g=rwx,o=rwx
+    mode: u=rwx,g=rwx,o=r
   loop:
     - routing-add-default-gateway.sh
     - routing-delete-default-gateway.sh
