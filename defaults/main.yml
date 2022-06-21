@@ -1,8 +1,8 @@
 ---
 # defaults file for nordvpn
 
-nordvpn_server_id: nl999  
-nordvpn_protocol: tcp
+nordvpn__server_id: nl999  
+nordvpn__protocol: tcp
 
-nordvpn_username: ""
-nordvpn_password: ""
+nordvpn__username: ""
+nordvpn__password: ""

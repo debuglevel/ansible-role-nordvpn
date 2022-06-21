@@ -1,4 +1,4 @@
 ---
-nordvpn_openvpn_url: https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
-nordvpn_config_name: "{{ nordvpn_server_id }}.nordvpn.com.{{ nordvpn_protocol }}.ovpn"
-nordvpn_config: "/etc/openvpn/nordvpn/ovpn_{{ nordvpn_protocol }}/{{ nordvpn_config_name }}"
+nordvpn__openvpn_url: https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+nordvpn__config_name: "{{ nordvpn__server_id }}.nordvpn.com.{{ nordvpn__protocol }}.ovpn"
+nordvpn__config: "/etc/openvpn/nordvpn/ovpn_{{ nordvpn__protocol }}/{{ nordvpn__config_name }}"

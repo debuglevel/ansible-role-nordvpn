@@ -40,7 +40,7 @@
 - name: Download OpenVPN configurations
   become: true
   ansible.builtin.get_url:
-    url: "{{ nordvpn_openvpn_url }}"
+    url: "{{ nordvpn__openvpn_url }}"
     dest: "/etc/openvpn/nordvpn/ovpn.zip"
     force: true
     owner: root
@@ -63,7 +63,7 @@
 - name: Ensure credentials file is referenced in wanted profile
   become: true
   ansible.builtin.lineinfile:
-    path: "{{ nordvpn_config }}"
+    path: "{{ nordvpn__config }}"
     regexp: '^auth-user-pass'
     line: 'auth-user-pass /etc/openvpn/nordvpn/credentials.cred'
     owner: root
@@ -74,7 +74,7 @@
   become: true
   ansible.builtin.copy:
     remote_src: true
-    src: "{{ nordvpn_config }}"
+    src: "{{ nordvpn__config }}"
     dest: /etc/openvpn/nordvpn/active.ovpn
     owner: root
     group: root
